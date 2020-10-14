@@ -20,7 +20,7 @@ def asignarValoresProceso():
        #print(len(proceso))
        #print(len(TE))
 
-def asignarTCC(index,vacio):
+def asignarTCC(index,vacio,micro,tiempoInicial):
     global TCC,TF,TI,tiempoCambio,procesoMs
 
     #print("TF",TF)
@@ -29,10 +29,10 @@ def asignarTCC(index,vacio):
 
     elif(index>0):
         #TCC[index]=tiempoCambio
-        if TF[index-1]>procesoMs[index]:
+        if microProcesadores[micro][len(microProcesadores[micro])-1].get("TF")>procesoMs[index]:
             #TI[index]=TF[index-1]
             TCC[index]=tiempoCambio
-        if TF[index-1]<procesoMs[index]:
+        if microProcesadores[micro][len(microProcesadores[micro])-1].get("TF")<procesoMs[index] or tiempoInicial!=0:
             #TI[index]=procesoMs[index]
             TCC[index]=0
 
@@ -69,9 +69,11 @@ def asignarTI(index,vacio,micro,tiempoInicial):
     global TI,TF,microProcesadores
     if(tiempoInicial!=0):
         TI[index]=tiempoInicial
-    if(vacio==True):
+
+    elif(vacio==True):
         TI[index]=0
-    elif index>0:
+
+    elif index>0 and tiempoInicial==0:
         TI[index]=microProcesadores[micro][len(microProcesadores[micro])-1].get("TF")
         #TI[index]=TF[index-1]
 
@@ -83,6 +85,9 @@ def asignarMicro(index):
     global microProcesadores,procesoMs
     micro=0;
     valoresFinales=[]
+    tiempoInicial=0
+
+
     for x in microProcesadores:
         if not x:
             micro=microProcesadores.index(x)
@@ -90,12 +95,24 @@ def asignarMicro(index):
             break
         else:
             valoresFinales.append(x[len(x)-1].get("TF"))
+
     micro=valoresFinales.index(min(valoresFinales))
-    tiempoInicial=0
-    print(valoresFinales)
-    print(min(valoresFinales))
-    if(min(valoresFinales)<procesoMs[index]):
+
+    for y in microProcesadores:
+        if(y[len(y)-1].get("TF")<procesoMs[index]):
+            tiempoInicial=procesoMs[index]
+            micro=microProcesadores.index(y)
+            break
+    '''if(max(valoresFinales)<procesoMs[index] and min(valoresFinales)<procesoMs[index]):
         tiempoInicial=procesoMs[index]
+        micro=0
+
+    elif min(valoresFinales)<procesoMs[index]:
+        tiempoInicial=procesoMs[index]'''
+
+
+    #print(valoresFinales)
+    #print(min(valoresFinales))
 
     return micro, False,tiempoInicial
 
@@ -103,6 +120,7 @@ def asignarPorMicro():
     procesos,TCC,TE,TVC,TB,TT,TI,TF=[],[],[],[],[],[],[],[]
     dicccccc=[]
     for micros in microProcesadores:
+        procesos,TCC,TE,TVC,TB,TT,TI,TF=[],[],[],[],[],[],[],[]
         for x in micros:
              procesos.append(x.get("Proceso"))
              TCC.append(x.get("TCC"))
@@ -120,7 +138,7 @@ def asignarPorMicro():
         "TT": TT,
         "TI": TI,
         "TF": TF}
-        print(dict)
+        #print(dict)
         dicccccc.append(dict)
 
 
@@ -182,8 +200,9 @@ asignarValoresProceso()
 for proc in proceso:
 
     microAsignado,vacio,tiempoInicial = asignarMicro(index)
-    print(microAsignado,vacio)
-    asignarTCC(index,vacio)
+    #print(microAsignado,vacio)
+    asignarTCC(index,vacio,microAsignado,tiempoInicial)
+    #print(proceso[index])
     asignarTI(index,vacio,microAsignado,tiempoInicial)
     asignarTVC(index)
     asignarTiempoBloqueo(index)
