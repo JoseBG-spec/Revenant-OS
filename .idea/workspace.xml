@@ -13,12 +13,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/RevenantOS.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="277" column="18" selection-start-line="277" selection-start-column="18" selection-end-line="277" selection-end-column="18" />
+            <state relative-caret-position="255">
+              <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
               <folding>
-                <element signature="e#3375#4112#0" />
-                <element signature="e#4159#4580#0" />
-                <element signature="e#4118#4139#0" expanded="true" />
+                <element signature="e#3061#3798#0" />
+                <element signature="e#4664#4685#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -38,8 +37,8 @@
       <find>TCC</find>
       <find>tiempoBloqueo</find>
       <find>procesoMs</find>
-      <find>print</find>
       <find>tiempoQuantum</find>
+      <find>print</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -137,7 +136,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.101685986" />
       <window_info id="Structure" order="1" weight="0.25" />
@@ -147,7 +145,7 @@
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Educational.CheckDetails" order="4" />
       <window_info anchor="bottom" id="Find" order="5" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" visible="true" weight="0.24419779" />
+      <window_info anchor="bottom" id="Run" order="6" weight="0.24419779" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -178,12 +176,11 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/RevenantOS.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="277" column="18" selection-start-line="277" selection-start-column="18" selection-end-line="277" selection-end-column="18" />
+        <state relative-caret-position="255">
+          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
           <folding>
-            <element signature="e#3375#4112#0" />
-            <element signature="e#4159#4580#0" />
-            <element signature="e#4118#4139#0" expanded="true" />
+            <element signature="e#3061#3798#0" />
+            <element signature="e#4664#4685#0" expanded="true" />
           </folding>
         </state>
       </provider>

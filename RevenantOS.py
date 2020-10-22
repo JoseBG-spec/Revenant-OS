@@ -39,7 +39,7 @@ def asignarTiempoBloqueo(index):
 def asignarTVC(index):
     global TVC,TE,tiempoQuantum,tiempoBloqueo
     x=0
-    if TE[index]>tiempoQuantum:
+    if TE[index]>=tiempoQuantum:
         x=TE[index]/tiempoQuantum
         x=math.ceil(x)
         x-=1
@@ -72,12 +72,13 @@ def asignarMicro(index):
     micro=0;
     valoresFinales=[]
     tiempoInicial=0
+    tiempoInicialCond=False
 
 
     for x in microProcesadores:
         if not x:
             micro=microProcesadores.index(x)
-            return micro, True,0
+            return micro, True,0,tiempoInicialCond
             break
         else:
             valoresFinales.append(x[len(x)-1].get("TF"))
@@ -88,6 +89,7 @@ def asignarMicro(index):
         if(y[len(y)-1].get("TF")<procesoMs[index]):
             tiempoInicial=procesoMs[index]
             micro=microProcesadores.index(y)
+            tiempoInicialCond=True
             break
     '''if(max(valoresFinales)<procesoMs[index] and min(valoresFinales)<procesoMs[index]):
         tiempoInicial=procesoMs[index]
@@ -100,7 +102,7 @@ def asignarMicro(index):
     #print(valoresFinales)
     #print(min(valoresFinales))
 
-    return micro, False,tiempoInicial
+    return micro, False,tiempoInicial,tiempoInicialCond
 
 def asignarPorMicro():
     procesos,TCC,TE,TVC,TB,TT,TI,TF=[],[],[],[],[],[],[],[]
@@ -132,6 +134,7 @@ def asignarPorMicro():
 
 def asignarPorMicroTkinter():
     inx=1
+    dicGUI.clear()
     tempDic=[[] for _ in range(18)]
     for micros in microProcesadores:
         tempDic[0]=["Proceso","TCC","TE","TVC","TB","TT","TI","TF"]
@@ -140,11 +143,21 @@ def asignarPorMicroTkinter():
                 tempDic[inx].append(x.get(y))
             inx+=1
         tempDic2 = [x for x in tempDic if x != []]
-        print(tempDic2)
+        #print(tempDic2)
         dicGUI.append(tempDic2)
         tempDic=[[] for _ in range(18)]
         inx=1
-
+def agregarEspacioEnBlanco(tiempoInicial,micro):
+    dictPerProcess1 = {"Proceso": 'Vacio',
+           "TCC": '',
+           "TE": '',
+           "TVC": '',
+            "TB": '',
+            "TT": '',
+            "TI": microProcesadores[micro][len(microProcesadores[micro])-1].get("TF"),
+            "TF": tiempoInicial
+                          }
+    return dictPerProcess1
 
 from tkinter import *
 from tkinter import ttk
@@ -180,12 +193,16 @@ tiempoCambio=int(input())'''
 microProcesadores=[]
 def iniciarProceso():
     global microProcesadores
+    microProcesadores.clear()
     microProcesadores=[[] for y in range(noProcesadores)]
+
     index=0
     asignarValoresProceso()
     for proc in proceso:
-
-        microAsignado,vacio,tiempoInicial = asignarMicro(index)
+        microAsignado,vacio,tiempoInicial,cambiodeTiempoInicial = asignarMicro(index)
+        if(cambiodeTiempoInicial==True):
+            tabla = agregarEspacioEnBlanco(tiempoInicial,microAsignado)
+            microProcesadores[microAsignado].append(tabla)
         #print(microAsignado,vacio)
         asignarTCC(index,vacio,microAsignado,tiempoInicial)
         #print(proceso[index])
@@ -194,6 +211,8 @@ def iniciarProceso():
         asignarTiempoBloqueo(index)
         asignarTT(index)
         asignarTF(index)
+
+
 
         dictPerProcess = {"Proceso": proceso[index],
            "TCC": TCC[index],
@@ -208,6 +227,7 @@ def iniciarProceso():
         microProcesadores[microAsignado].append(dictPerProcess)
         #print("TCC",index,TCC)
         index+=1
+
     asignarPorMicroTkinter()
 brics=[]
 
@@ -230,32 +250,38 @@ class Table:
     def __init__(self,root):
         x=0
         columns=0
+        tabla=0
         for p in dicGUI:
             xp=x+1
+            tabla=tabla+1
             total_rows = len(p)
             total_columns = len(p[0])
             for i in range(xp,total_rows+xp):
                 for j in range(total_columns):
 
-                    self.e = Entry(root, width=dimensionX//(total_columns*12), fg='black', font=('URW Gothic L',14,'bold'))
+                    self.e = Entry(root, width=dimensionX//(total_columns*13), fg='black', font=('URW Gothic L',14,'bold'))
 
                     if i!=xp:
                         self.e.grid(row=i, column=j)
                         x=i
                     else:
+                        self.k = Entry(root, width=dimensionX//(total_columns*13), fg='green', font=('URW Gothic L',14,'bold'))
+                        self.k.grid(row=i, column=total_columns+1,padx=0,pady=10)
+                        self.k.insert(END, "Micro "+str(tabla))
+                        self.e = Entry(root, width=dimensionX//(total_columns*13), fg='blue', font=('URW Gothic L',14,'bold'))
                         self.e.grid(row=i, column=j,padx=0,pady=10)
                         #print("yay")
 
                     self.e.insert(END, p[i-xp][j])
-        print(x)
+        #print(x)
 
 
 def createTable():
+    borrar()
     iniciarProceso()
     w= Frame(tab2)
     w.pack(side=LEFT,fill=Y)
     t=(Table(w))
-
 
 
 def checarDatos():
@@ -275,21 +301,28 @@ def checarDatos():
     entry4.delete(0, 'end')
 
 def borrar():
-    w.grid_forget()
+    global tab2
+    tab2.destroy()
+    #tab_control.forget(tab2)
+    tab2 = ttk.Frame(tab_control)
+    tab_control.add(tab2, text='Tabla(s)')
+    s=Scrollbar(tab2)
+    s.pack(side=RIGHT,fill=Y)
 #GUI
 dimensionX,dimensionY=1000,800
-
+t=0
 root = Tk()
 root.title("Microprocesadores")
 root.geometry('1000x800')
 s = ttk.Style()
-s.configure('TNotebook.Tab', font=('URW Gothic L','20','bold') )
+s.configure('TNotebook.Tab', font=('URW Gothic L','17','bold') )
 tab_control = ttk.Notebook(root)
 
 tab1 = ttk.Frame(tab_control)
 tab2 = ttk.Frame(tab_control)
 w= Frame(tab2)
 s=Scrollbar(tab2)
+#s.config( command = w.h)
 s.pack(side=RIGHT,fill=Y)
 
 lbl = Label(tab1, text="Ingresa el numero de microprocesadores", font=('URW Gothic L',14,'bold'))
