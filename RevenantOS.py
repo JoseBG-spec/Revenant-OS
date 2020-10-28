@@ -3,23 +3,15 @@ def asignarValoresProceso():
        proceso = ["B", "D", "F", "H", "J","L","N","O","A","C","E","G","I","K","M","P","Ñ"]
        procesoMs=[0,0,0,0,1500,1500,1500,1500,3000,3000,3000,3000,3000,4000,4000,4000,8000]
        TE=[300,100,500,700,300,3000,50,600,400,50,1000,10,450,100,80,800,500]
-       #print(len(proceso))
-       #print(len(TE))
 
 def asignarTCC(index,vacio,micro,tiempoInicial):
     global TCC,TF,TI,tiempoCambio,procesoMs
-
-    #print("TF",TF)
     if(vacio==True):
         TCC[index]=0
-
     elif(index>0):
-        #TCC[index]=tiempoCambio
         if microProcesadores[micro][len(microProcesadores[micro])-1].get("TF")>procesoMs[index]:
-            #TI[index]=TF[index-1]
             TCC[index]=tiempoCambio
         if microProcesadores[micro][len(microProcesadores[micro])-1].get("TF")<procesoMs[index] or tiempoInicial!=0:
-            #TI[index]=procesoMs[index]
             TCC[index]=0
 
 def asignarTiempoBloqueo(index):
@@ -43,7 +35,7 @@ def asignarTVC(index):
         x=TE[index]/tiempoQuantum
         x=math.ceil(x)
         x-=1
-        TVC[index]=x*tiempoBloqueo
+        TVC[index]=x*tiempoCambio
     elif TE[index]<tiempoQuantum:
         TVC[index]=0
 
@@ -55,13 +47,11 @@ def asignarTI(index,vacio,micro,tiempoInicial):
     global TI,TF,microProcesadores
     if(tiempoInicial!=0):
         TI[index]=tiempoInicial
-
     elif(vacio==True):
         TI[index]=0
-
     elif index>0 and tiempoInicial==0:
         TI[index]=microProcesadores[micro][len(microProcesadores[micro])-1].get("TF")
-        #TI[index]=TF[index-1]
+
 
 def asignarTF(index):
     global TF,TI,TT
@@ -152,6 +142,7 @@ def asignarPorMicroTkinter():
         dicGUI.append(tempDic2)
         tempDic=[[] for _ in range(18)]
         inx=1
+
 def agregarEspacioEnBlanco(tiempoInicial,micro):
     dictPerProcess1 = {"Proceso": 'Vacio',
            "TCC": '',
@@ -186,15 +177,6 @@ tiempoBloqueo=0
 tiempoCambio=0
 dicGUI=[]
 
-
-'''print("¿Cuantos microrocesadores son?:")
-noProcesadores=int(input())
-print("Tiempo duración de cada Quantum:")
-tiempoQuantum=int(input())
-print("Tiempo de bloqueo:")
-tiempoBloqueo=int(input())
-print("Tiempo de cambio:")
-tiempoCambio=int(input())'''
 microProcesadores=[]
 def iniciarProceso():
     global microProcesadores
@@ -208,9 +190,8 @@ def iniciarProceso():
         if(cambiodeTiempoInicial==True):
             tabla = agregarEspacioEnBlanco(tiempoInicial,microAsignado)
             microProcesadores[microAsignado].append(tabla)
-        #print(microAsignado,vacio)
+
         asignarTCC(index,vacio,microAsignado,tiempoInicial)
-        #print(proceso[index])
         asignarTI(index,vacio,microAsignado,tiempoInicial)
         asignarTVC(index)
         asignarTiempoBloqueo(index)
