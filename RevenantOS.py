@@ -74,10 +74,20 @@ def asignarMicro(index):
     tiempoInicial=0
     tiempoInicialCond=False
 
+    for y in microProcesadores:
+        if y:
+            if(y[len(y)-1].get("TF")<procesoMs[index]):
+                tiempoInicial=procesoMs[index]
+                micro=microProcesadores.index(y)
+                tiempoInicialCond=True
+                return micro, False,tiempoInicial,tiempoInicialCond
+                break
+
 
     for x in microProcesadores:
         if not x:
             micro=microProcesadores.index(x)
+
             return micro, True,0,tiempoInicialCond
             break
         else:
@@ -85,12 +95,7 @@ def asignarMicro(index):
 
     micro=valoresFinales.index(min(valoresFinales))
 
-    for y in microProcesadores:
-        if(y[len(y)-1].get("TF")<procesoMs[index]):
-            tiempoInicial=procesoMs[index]
-            micro=microProcesadores.index(y)
-            tiempoInicialCond=True
-            break
+
     '''if(max(valoresFinales)<procesoMs[index] and min(valoresFinales)<procesoMs[index]):
         tiempoInicial=procesoMs[index]
         micro=0
@@ -280,8 +285,30 @@ def createTable():
     borrar()
     iniciarProceso()
     w= Frame(tab2)
-    w.pack(side=LEFT,fill=Y)
-    t=(Table(w))
+    #w.pack(side=LEFT,fill=Y)
+    canvas = Canvas(w)
+    canvas.config(width=950, height=800)
+
+    s=Scrollbar(w,orient="vertical",command=canvas.yview)
+    #s.pack(side=RIGHT,fill=Y)
+
+    scrollable_frame = ttk.Frame(canvas,width=950, height=800)
+
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(
+        scrollregion=canvas.bbox("all")
+    )
+    )
+    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+
+    canvas.configure(yscrollcommand=s.set)
+
+    t=(Table(scrollable_frame))
+
+    w.pack()
+    canvas.pack(side="left", fill="both", expand=True)
+    s.pack(side="right", fill="y")
 
 
 def checarDatos():
@@ -306,8 +333,8 @@ def borrar():
     #tab_control.forget(tab2)
     tab2 = ttk.Frame(tab_control)
     tab_control.add(tab2, text='Tabla(s)')
-    s=Scrollbar(tab2)
-    s.pack(side=RIGHT,fill=Y)
+    #s=Scrollbar(tab2)
+    #s.pack(side=RIGHT,fill=Y)
 #GUI
 dimensionX,dimensionY=1000,800
 t=0
@@ -321,9 +348,9 @@ tab_control = ttk.Notebook(root)
 tab1 = ttk.Frame(tab_control)
 tab2 = ttk.Frame(tab_control)
 w= Frame(tab2)
-s=Scrollbar(tab2)
-#s.config( command = w.h)
-s.pack(side=RIGHT,fill=Y)
+#s=Scrollbar(tab2)
+#s.config( command = w.winfo_height())
+
 
 lbl = Label(tab1, text="Ingresa el numero de microprocesadores", font=('URW Gothic L',14,'bold'))
 lbl.pack(side=TOP)

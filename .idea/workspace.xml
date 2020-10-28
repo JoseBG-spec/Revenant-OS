@@ -13,12 +13,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/RevenantOS.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
-              <folding>
-                <element signature="e#3061#3798#0" />
-                <element signature="e#4664#4685#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="1275">
+              <caret line="89" lean-forward="true" selection-start-line="89" selection-end-line="89" />
             </state>
           </provider>
         </entry>
@@ -39,6 +35,7 @@
       <find>procesoMs</find>
       <find>tiempoQuantum</find>
       <find>print</find>
+      <find>scrollbar</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -52,8 +49,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+    <option name="x" value="419" />
+    <option name="y" value="-24" />
     <option name="width" value="974" />
     <option name="height" value="1031" />
   </component>
@@ -173,15 +170,22 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout-to-restore>
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/RevenantOS.py</url>
+          <line>351</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/RevenantOS.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
-          <folding>
-            <element signature="e#3061#3798#0" />
-            <element signature="e#4664#4685#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="1275">
+          <caret line="89" lean-forward="true" selection-start-line="89" selection-end-line="89" />
         </state>
       </provider>
     </entry>
